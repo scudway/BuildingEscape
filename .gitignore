@@ -9,3 +9,4 @@ BuildingEscape/Content/StarterContent/
 
 #VS generated files
 *.VC.db
+*.opendb
