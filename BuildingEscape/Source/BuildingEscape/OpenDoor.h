@@ -19,6 +19,8 @@ public:
 	virtual void BeginPlay() override;
 
 	void OpenDoor();
+
+	void CloseDoor();
 	
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
@@ -30,7 +32,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
 
-	UPROPERTY(VisibleAnywhere)
-	AActor* ActorThatOpens; // the actor that triggers the triggervolume
+	UPROPERTY(EditAnywhere)
+	float CloseDoorDelay = 0.7f;
 
+	
+	AActor* ActorThatOpens; // the actor that triggers the triggervolume
+	AActor* Owner; //the owning door
+	float LastTimeDoorOpened = 0.f;
 };
