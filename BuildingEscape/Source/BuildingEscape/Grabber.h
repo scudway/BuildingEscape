@@ -25,5 +25,5 @@ private :
 
 	FVector PlayerViewpointLocation;
 	FRotator PlayerViewpointRotation;
-	
+	float Reach = 100.f;
 };
