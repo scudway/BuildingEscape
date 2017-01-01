@@ -19,9 +19,40 @@ UGrabber::UGrabber()
 void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UE_LOG(LogTemp, Warning, TEXT("Grabber repoting for duty !!"));
 	
+	UE_LOG(LogTemp, Warning, TEXT("Grabber repoting for duty !!"))
+	
+	// find the physics handle
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	//check if the physics handle were found
+	if (PhysicsHandle)
+	{
+		// TODO
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s doesn't have a physicshandle component !"),*GetOwner()->GetName());
+	}
+
+	// find the input component
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	//check if the input component were found
+	if (InputComponent)
+	{
+		// bind key with events
+		InputComponent->BindAction("Grab", EInputEvent::IE_Pressed, this, &UGrabber::Grab);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s doesn't have a Input Component !"), *GetOwner()->GetName());
+	}
+
+
+}
+
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab activated !"));
 }
 
 
@@ -30,16 +61,12 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	// get player view point 
+	/// get player view point 
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
 		OUT PlayerViewpointLocation,
 		OUT PlayerViewpointRotation);
-	// logging the coordinates of *location and *rotation
-	UE_LOG(LogTemp, Warning, TEXT("location is :%s , roation : %s"),
-		*PlayerViewpointLocation.ToString(),
-		*PlayerViewpointRotation.ToString());
 
-	// draw a debug line trace 
+	/// draw a debug line trace 
 	FVector PlayerViewpointEnd = PlayerViewpointLocation + ( 100 * PlayerViewpointRotation.Vector());
 
 	DrawDebugLine(
@@ -53,8 +80,25 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 		10.f
 	);
 
-	// ray-cast to reach certain distance
+	/// ray-cast to reach certain distance
+	FHitResult Hit;
+	FCollisionQueryParams Params(FName(TEXT("")), false, GetOwner());
 
-	// see what we hit 
+	GetWorld()->LineTraceSingleByObjectType(
+		OUT Hit,
+		PlayerViewpointLocation,
+		PlayerViewpointEnd,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+		Params
+	);
+	/// see what we hit 
+	AActor* HitObject = Hit.GetActor();
+	if (HitObject)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("you did hit : %s"), *HitObject->GetName())
+	}
+	
 }
+
+
 

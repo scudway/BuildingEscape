@@ -26,4 +26,10 @@ private :
 	FVector PlayerViewpointLocation;
 	FRotator PlayerViewpointRotation;
 	float Reach = 100.f;
+
+	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+	UInputComponent* InputComponent = nullptr;
+
+	// grab when pressed 
+	void UGrabber::Grab();
 };
