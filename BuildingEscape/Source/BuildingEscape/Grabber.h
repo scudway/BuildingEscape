@@ -25,6 +25,7 @@ private :
 
 	FVector PlayerViewpointLocation;
 	FRotator PlayerViewpointRotation;
+	FVector PlayerViewpointEnd;
 	float Reach = 100.f;
 
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;
@@ -43,4 +44,7 @@ private :
 
 	/// get the first physics body in reach
 	const FHitResult GetFirstPhysicsBodyInReach();
+
+	/// get the player viewpoint
+	void GetFirstPlayerViewPoint();
 };
