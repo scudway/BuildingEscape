@@ -26,6 +26,9 @@ public:
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 private:
+	
+	float GetTotalMassOverlappingActors();
+	
 	UPROPERTY(EditAnywhere)
 	float OpenAngle = -70.f;
 
@@ -35,8 +38,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	float CloseDoorDelay = 0.7f;
 
-	
-	AActor* ActorThatOpens; // the actor that triggers the triggervolume
+	UPROPERTY(EditAnywhere)
+	float WeightThreshold = 50.f;
+
+
 	AActor* Owner; //the owning door
 	float LastTimeDoorOpened = 0.f;
 };

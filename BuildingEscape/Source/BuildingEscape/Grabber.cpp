@@ -110,8 +110,4 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 		GetFirstPlayerViewPoint();
 		PhysicsHandle->SetTargetLocation(PlayerViewpointEnd);
 	}
-	
 }
-
-
-
