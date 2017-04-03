@@ -31,5 +31,16 @@ private :
 	UInputComponent* InputComponent = nullptr;
 
 	// grab when pressed 
-	void UGrabber::Grab();
+	void Grab();
+	// when release the grab
+	void Release();
+
+	///find the physics handle component
+	void SetupPhysicsHandleComponent();
+
+	/// find input component and setup keymapping
+	void SetupInputComponent();
+
+	/// get the first physics body in reach
+	const FHitResult GetFirstPhysicsBodyInReach();
 };
