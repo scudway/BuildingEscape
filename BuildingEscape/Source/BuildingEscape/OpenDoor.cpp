@@ -20,6 +20,7 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
+
 	Owner = GetOwner();
 	if (PressurePlate == nullptr)
 	{
@@ -27,16 +28,10 @@ void UOpenDoor::BeginPlay()
 	}
 }
 
-void UOpenDoor::OpenDoor()
-{
-	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
-	return;
-}
-
 void UOpenDoor::CloseDoor()
 {
 	Owner->SetActorRotation(FRotator(0.f, 90.f, 0.f));
-	return;
+	
 }
 
 
@@ -47,16 +42,13 @@ void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompo
 
 	// poll triggervolume for actor overlaps 
 	if (PressurePlate == nullptr) { return; }
-	if (GetTotalMassOverlappingActors() > WeightThreshold)
-	{
-		OpenDoor();
-		LastTimeDoorOpened = GetWorld()->GetTimeSeconds();
-	}
 	
-	// if it is time to close the door ...
-	if (GetWorld()->GetTimeSeconds() - LastTimeDoorOpened > CloseDoorDelay)
+	if (GetTotalMassOverlappingActors() > TriggerMass)
 	{
-		CloseDoor();
+		OnOpen.Broadcast();
+	}else
+	{
+		OnClose.Broadcast();
 	}
 }
 
