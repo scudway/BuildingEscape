@@ -20,8 +20,11 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
-
 	Owner = GetOwner();
+	if (PressurePlate == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s has no pressure plate assigned !"), *GetOwner()->GetName());
+	}
 }
 
 void UOpenDoor::OpenDoor()
@@ -43,6 +46,7 @@ void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompo
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
 	// poll triggervolume for actor overlaps 
+	if (PressurePlate == nullptr) { return; }
 	if (GetTotalMassOverlappingActors() > WeightThreshold)
 	{
 		OpenDoor();
@@ -60,7 +64,6 @@ float UOpenDoor::GetTotalMassOverlappingActors()
 {
 	float TotalMass = 0.f;
 	TArray<AActor *> OverlappingActors;
-
 	//find all overlapping actors 
 	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
 	// iterate through overlapping actors and sum their masses

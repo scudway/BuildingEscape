@@ -52,6 +52,7 @@ void UGrabber::SetupPhysicsHandleComponent()
 
 void UGrabber::Grab()
 {
+	if (PhysicsHandle == nullptr) { return; }
 	//LINE TRACE and see if we hit a physics object
 	FHitResult hit = GetFirstPhysicsBodyInReach();
 	// attach physics handle if we get a hit
@@ -71,6 +72,7 @@ void UGrabber::Grab()
 /// release the grabbed physics object
 void UGrabber::Release()
 {
+	if (PhysicsHandle == nullptr) { return; }
 	PhysicsHandle->ReleaseComponent();
 }
 
@@ -104,7 +106,7 @@ void UGrabber::GetFirstPlayerViewPoint()
 void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-	
+	if (PhysicsHandle == nullptr) { return; }
 	if (PhysicsHandle->GrabbedComponent)
 	{
 		GetFirstPlayerViewPoint();
